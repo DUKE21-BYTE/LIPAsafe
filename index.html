@@ -70,25 +70,38 @@
   </div>
 
   <script>
-    // Inline data to keep simple for now
+    // SVG Icons
+    const ICONS = {
+      utilities: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
+      banking: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+      internet: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+      government: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+      shopping: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>',
+      transport: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polyline points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+      insurance: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+      education: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12.5V16a6 6 0 0 0 12 0v-3.5"/></svg>'
+    };
+
     const CATEGORIES = [
-      { name: "Utilities", icon: "⚡", description: "Water, Electricity, Gas" },
-      { name: "Banking", icon: "🏦", description: "Banks, Loans, SACCOs" },
-      { name: "Internet", icon: "🌐", description: "Wifi, Fiber, Data" },
-      { name: "Government", icon: "🏛️", description: "KRA, NHIF, eCitizen" },
-      { name: "Shopping", icon: "🛒", description: "Supermarkets, Online" },
-      { name: "Transport", icon: "🚗", description: "Fuel, SGR, Flights" },
-      { name: "Insurance", icon: "🛡️", description: "Health, Life, Motor" },
-      { name: "Education", icon: "🎓", description: "Schools, Universities" }
+      { id: "utilities", name: "Utilities", description: "Water, Power, Gas" },
+      { id: "banking", name: "Banking", description: "Banks & Loans" },
+      { id: "internet", name: "Internet", description: "Wifi & Data" },
+      { id: "government", name: "Government", description: "KRA & Services" },
+      { id: "shopping", name: "Shopping", description: "Retail & Stores" },
+      { id: "transport", name: "Transport", description: "Fuel & Travel" },
+      { id: "insurance", name: "Insurance", description: "Cover & Policy" },
+      { id: "education", name: "Education", description: "Schools & Fees" }
     ];
 
     const grid = document.getElementById('categoryGrid');
     CATEGORIES.forEach(cat => {
       const card = document.createElement('a');
-      card.href = `categories/${cat.name.toLowerCase()}.html`;
+      card.href = `categories/${cat.id}.html`;
       card.className = 'cat-card';
       card.innerHTML = `
-        <span class="cat-icon">${cat.icon}</span>
+        <div class="cat-icon-wrapper bg-${cat.id}">
+          ${ICONS[cat.id]}
+        </div>
         <div class="cat-info">
           <h4>${cat.name}</h4>
           <p>${cat.description}</p>
