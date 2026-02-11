@@ -25,9 +25,6 @@
           </div>
           <h1>Utilities</h1>
           <p class="cat-intro">Electricity, Water, and Gas payment details.</p>
-          <a href="https://buymeacoffee.com/dennis2" target="_blank" class="coffee-link" style="margin-top: 12px;">
-            <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 32px !important;width: 116px !important;" >
-          </a>
         </div>
         <div class="search-wrap compact">
           <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
@@ -38,15 +35,23 @@
       </div>
     </header>
     <main class="results-area"><div class="results-grid" id="results"></div></main>
-    <nav class="btm-nav">
-      <a href="../index.html" class="nav-item">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
-        <span class="nav-label">Home</span>
-      </a>
-      <button class="nav-item" id="themeToggle">
-        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z" /></svg>
-        <span class="nav-label">Theme</span>
-      </button>
+    <footer class="landing-footer" style="padding-bottom: 40px; margin-bottom: 80px;">
+        <div class="footer-links">
+          <a href="../privacy.html">Privacy Policy</a>
+          <span class="dot">•</span>
+          <a href="../disclaimer.html">Disclaimer</a>
+        </div>
+        <div class="support-channels">
+          <a href="https://buymeacoffee.com/dennis2" target="_blank" class="subtle-support">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            Buy me a coffee
+          </a>
+          <span class="dot">•</span>
+          <button class="subtle-support" onclick="copySupportNumber()">
+            Support via M-Pesa (0758596269)
+          </button>
+        </div>
+    </footer>
     </nav>
   </div>
   <script>
@@ -76,11 +81,14 @@
         resultsDiv.appendChild(card);
       });
     }
-    window.copyText = (text) => { navigator.clipboard.writeText(text).then(() => showToast(`${text} copied!`)); };
-    searchInput.oninput = () => { const q = searchInput.value.toLowerCase(); render(DATA.filter(i => i.name.toLowerCase().includes(q))); };
-    const themeBtn = document.getElementById('themeToggle');
-    themeBtn.onclick = () => { const isDark = document.documentElement.getAttribute('data-theme') === 'dark'; const newTheme = isDark ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', newTheme); localStorage.setItem('lipasafe_theme', newTheme); };
-    if (localStorage.getItem('lipasafe_theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    window.copySupportNumber = () => {
+      navigator.clipboard.writeText('0758596269').then(() => {
+        const toast = document.getElementById('toast');
+        toast.textContent = `Support Number Copied!`;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    };
     render(DATA);
   </script>
 </body>
