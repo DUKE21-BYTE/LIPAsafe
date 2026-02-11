@@ -112,34 +112,40 @@ if (darkMode) {
   document.documentElement.setAttribute('data-theme', 'dark');
 }
 
-themeToggle.addEventListener('click', () => {
-  darkMode = !darkMode;
-  document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
-  localStorage.setItem('lipasafe_theme', darkMode ? 'dark' : 'light');
-  showToast(darkMode ? 'Dark mode enabled' : 'Light mode enabled');
-});
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    darkMode = !darkMode;
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+    localStorage.setItem('lipasafe_theme', darkMode ? 'dark' : 'light');
+    showToast(darkMode ? 'Dark mode enabled' : 'Light mode enabled');
+  });
+}
 
-// Initialize Categories
-const categories = ['All', ...new Set(ALL_DATA.map(item => item.category))];
-categories.forEach(cat => {
-  const btn = document.createElement('button');
-  btn.className = `cat-pill ${cat === 'All' ? 'active' : ''}`;
-  btn.textContent = cat;
-  btn.onclick = () => {
-    currentCategory = cat;
-    document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    refresh();
-  };
-  catStrip.appendChild(btn);
-});
+// Initialize Categories Strip (for category pages)
+if (catStrip) {
+  const categoriesList = ['All', ...new Set(ALL_DATA.map(item => item.category))];
+  categoriesList.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = `cat-pill ${cat === 'All' ? 'active' : ''}`;
+    btn.textContent = cat;
+    btn.onclick = () => {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      refresh();
+    };
+    catStrip.appendChild(btn);
+  });
+}
 
 let toastTimer = null;
 function showToast(msg) {
-  toastEl.textContent = msg;
-  toastEl.classList.add('show');
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.classList.add('show');
   if (toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2500);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
 function esc(str) {
@@ -149,10 +155,11 @@ function esc(str) {
 }
 
 function render(data) {
+  if (!resultsDiv) return;
   resultsDiv.innerHTML = '';
   
   if (data.length === 0) {
-    countLabel.textContent = 'No matches found';
+    if (countLabel) countLabel.textContent = 'No matches found';
     resultsDiv.innerHTML = `
       <div class="empty-state">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -165,7 +172,7 @@ function render(data) {
     return;
   }
 
-  countLabel.textContent = `${data.length} Service${data.length !== 1 ? 's' : ''}`;
+  if (countLabel) countLabel.textContent = `${data.length} Service${data.length !== 1 ? 's' : ''}`;
 
   data.forEach((item, index) => {
     const isFav = favorites.includes(item.id);
@@ -208,7 +215,7 @@ function render(data) {
 }
 
 function getFilteredData() {
-  const query = searchInput.value.toLowerCase().trim();
+  const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
   let data = ALL_DATA;
 
   if (currentView === 'favs') {
@@ -230,7 +237,7 @@ function getFilteredData() {
 }
 
 function refresh() {
-  render(getFilteredData());
+  if (resultsDiv) render(getFilteredData());
 }
 
 function toggleFav(id) {
@@ -259,27 +266,28 @@ function copyNumber(num) {
 }
 
 // Event Listeners
-searchInput.addEventListener('input', refresh);
+if (searchInput) searchInput.addEventListener('input', refresh);
 
-document.getElementById('navHome').addEventListener('click', () => {
-  currentView = 'home';
-  document.getElementById('navHome').classList.add('active');
-  document.getElementById('navFavs').classList.remove('active');
-  refresh();
-});
+const navHome = document.getElementById('navHome');
+const navFavs = document.getElementById('navFavs');
 
-document.getElementById('navFavs').addEventListener('click', () => {
-  currentView = 'favs';
-  document.getElementById('navFavs').classList.add('active');
-  document.getElementById('navHome').classList.remove('active');
-  refresh();
-});
+if (navHome) {
+  navHome.addEventListener('click', () => {
+    currentView = 'home';
+    navHome.classList.add('active');
+    if (navFavs) navFavs.classList.remove('active');
+    refresh();
+  });
+}
 
-document.getElementById('reportBtn').addEventListener('click', (e) => {
-  e.preventDefault();
-  showToast('Thank you! Redirecting to report form...');
-  // In a real app, this would link to a form
-});
+if (navFavs) {
+  navFavs.addEventListener('click', () => {
+    currentView = 'favs';
+    navFavs.classList.add('active');
+    if (navHome) navHome.classList.remove('active');
+    refresh();
+  });
+}
 
 // Initial Render
-refresh();
+if (resultsDiv) refresh();
