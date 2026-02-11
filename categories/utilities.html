@@ -75,6 +75,7 @@
     </footer>
     </nav>
   </div>
+  <script src="../script.js"></script>
   <script>
     const DATA = [
       { id:1, name:"KPLC Prepaid (Tokens)", type:"Paybill", number:"888880", account:"Meter Number", verified:true },
@@ -89,28 +90,14 @@
       { id:204, name:"Startimes", type:"Paybill", number:"585858", account:"Smart Card No", verified:true },
       { id:205, name:"M-KOPA Solar", type:"Paybill", number:"333222", account:"M-KOPA Acc No", verified:true }
     ];
-    const resultsDiv = document.getElementById('results');
-    const searchInput = document.getElementById('catSearch');
-    const toastEl = document.getElementById('toast');
-    function showToast(msg) { toastEl.textContent = msg; toastEl.classList.add('show'); setTimeout(() => toastEl.classList.remove('show'), 2500); }
-    function render(data) {
-      resultsDiv.innerHTML = '';
-      data.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'ls-card';
-        card.innerHTML = `<div class="card-top"><div class="info-main"><div class="card-name">${item.name} ${item.verified ? '<span class="verified-badge">✓ Verified</span>' : ''}</div><div class="card-meta"><span>${item.type}</span></div></div></div><div class="number-section"><div class="number-info"><span class="num-label">Number</span><span class="num-value">${item.number}</span></div><button class="copy-btn" onclick="copyText('${item.number}')">Copy</button></div><div class="card-footer"><span class="acc-hint">Account: ${item.account}</span></div>`;
-        resultsDiv.appendChild(card);
-      });
-    }
+
     window.copySupportNumber = () => {
       navigator.clipboard.writeText('0758596269').then(() => {
-        const toast = document.getElementById('toast');
-        toast.textContent = `Support Number Copied!`;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2000);
+        showToast('Support Number Copied!');
       });
     };
-    render(DATA);
+
+    initCategoryPage('Utilities', DATA);
   </script>
 </body>
 </html>

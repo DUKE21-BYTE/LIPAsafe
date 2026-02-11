@@ -520,3 +520,58 @@ body {
   .hero-text p { font-size: 14px; }
   .ls-header { padding: 32px 16px 40px; }
 }
+/* Fallback Search Styles */
+.fallback-search {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.fallback-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: 14px;
+  text-decoration: none !important;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  max-width: 280px;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.google-btn {
+  background: white;
+  color: #3c4043;
+  border: 1px solid #dadce0;
+}
+
+.google-btn:hover {
+  background: #f8f9fa;
+  box-shadow: 0 1px 6px rgba(32,33,36,0.15);
+  transform: translateY(-1px);
+}
+
+.chatgpt-btn {
+  background: #10a37f;
+  color: white;
+  border: none;
+}
+
+.chatgpt-btn:hover {
+  background: #0d8a6a;
+  box-shadow: 0 4px 12px rgba(16,163,127,0.25);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+  .fallback-btn {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+}

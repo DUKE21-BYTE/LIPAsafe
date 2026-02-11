@@ -101,7 +101,7 @@ let darkMode = localStorage.getItem('lipasafe_theme') === 'dark';
 
 // DOM Elements
 const resultsDiv = document.getElementById('results');
-const searchInput = document.getElementById('searchInput');
+const searchInput = document.getElementById('globalSearch') || document.getElementById('catSearch') || document.getElementById('searchInput');
 const countLabel = document.getElementById('countLabel');
 const catStrip = document.getElementById('catStrip');
 const toastEl = document.getElementById('toast');
@@ -159,6 +159,7 @@ function render(data) {
   resultsDiv.innerHTML = '';
   
   if (data.length === 0) {
+    const q = searchInput ? searchInput.value.trim() : '';
     if (countLabel) countLabel.textContent = 'No matches found';
     resultsDiv.innerHTML = `
       <div class="empty-state">
@@ -166,7 +167,18 @@ function render(data) {
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
         </svg>
         <h3>No results found</h3>
-        <p>Try searching for something else or changing categories.</p>
+        <p>We couldn't find a match for <strong>"${esc(q)}"</strong>. Try one of these fallbacks:</p>
+        
+        <div class="fallback-search">
+          <a href="https://www.google.com/search?q=M-Pesa+Paybill+for+${encodeURIComponent(q || 'business')}" target="_blank" class="fallback-btn google-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Search Google
+          </a>
+          <a href="https://chatgpt.com/?q=Search+for+M-Pesa+Paybill+or+Till+number+for+${encodeURIComponent(q || 'business')}" target="_blank" class="fallback-btn chatgpt-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right:4px;"><path d="M22.282 9.821a5.985 5.985 0 0 0-2.715-3.514 6.046 6.046 0 0 0-6.509.051 6.069 6.069 0 0 0-4.647-2.098 6.033 6.033 0 0 0-5.45 3.396 6.03 6.03 0 0 0-2.127 4.734 6.033 6.033 0 0 0 2.715 3.514 6.046 6.046 0 0 0 6.509-.051 6.069 6.069 0 0 0 4.647 2.098 6.033 6.033 0 0 0 5.45-3.396 6.03 6.03 0 0 0 2.127-4.734zM8.847 18.847a3.83 3.83 0 0 1-1.915-.521l.033-.018 3.53-2.041a.465.465 0 0 0 .232-.403v-4.01l2.306 1.332v4.057a.465.465 0 0 1-.232.403l-3.492 2.017a3.81 3.81 0 0 1-1.93.522zm-4.729-1.405a3.826 3.826 0 0 1-.412-1.942l.033.018 3.53 2.041a.466.466 0 0 0 .466 0l3.473-2.005-2.306-1.332-3.414 1.97a.466.466 0 0 1-.466 0l-3.492-2.017a3.81 3.81 0 0 1-1.412-4.732z"/></svg> 
+            Ask AI (ChatGPT)
+          </a>
+        </div>
       </div>
     `;
     return;
@@ -291,3 +303,19 @@ if (navFavs) {
 
 // Initial Render
 if (resultsDiv) refresh();
+
+// Sustainability Helper for Category Pages
+window.initCategoryPage = (categoryName, localData) => {
+  const data = localData || ALL_DATA.filter(i => i.category === categoryName);
+  if (searchInput) {
+    searchInput.oninput = () => {
+      const q = searchInput.value.toLowerCase().trim();
+      render(data.filter(i => 
+        i.name.toLowerCase().includes(q) || 
+        i.number.includes(q) ||
+        (i.type && i.type.toLowerCase().includes(q))
+      ));
+    };
+  }
+  render(data);
+};
