@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; form-action 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com 'self'; img-src 'self' data: https://cdn.buymeacoffee.com; connect-src 'self'; frame-ancestors 'none'; form-action 'self';">
   <title>LipaSafe - M-Pesa Paybill & Till Directory</title>
   <meta name="description" content="Securely find and verify M-Pesa Paybill and Till numbers for KPLC, Water, Banks, Government services, and more.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,32 +29,47 @@
         </div>
         <div class="hero-text">
           <h2>Secure M-Pesa Directory</h2>
-          <p>Instantly find and verify Paybill and Till numbers for all major services in Kenya.</p>
-          <a href="https://buymeacoffee.com/dennis2" target="_blank" class="coffee-link">
-            <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 144px !important;" >
-          </a>
+          <p>The safest way to find and verify payment numbers in Kenya.</p>
+        </div>
+        <div class="search-wrap">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input type="text" id="globalSearch" placeholder="Search services (e.g. KPLC, Equity)..." autocomplete="off">
         </div>
       </div>
     </header>
 
     <main class="landing-main">
-      <section class="category-section">
+      <div id="searchResults" class="results-grid" style="display: none; margin-bottom: 40px;"></div>
+      
+      <section class="category-section" id="catSection">
         <h3 class="section-title">Browse Categories</h3>
         <div class="category-grid" id="categoryGrid">
           <!-- Categories will be injected here -->
         </div>
       </section>
 
-      <section class="info-section">
-        <div class="info-card">
-          <h4>Why use LipaSafe?</h4>
-          <ul>
-            <li><strong>Verified:</strong> All numbers are manually checked.</li>
-            <li><strong>Secure:</strong> Reduce risk of sending money to the wrong person.</li>
-            <li><strong>Fast:</strong> One-tap copy to M-Pesa.</li>
-          </ul>
+      <footer class="landing-footer">
+        <div class="footer-links">
+          <a href="privacy.html">Privacy Policy</a>
+          <span class="dot">•</span>
+          <a href="disclaimer.html">Disclaimer</a>
         </div>
-      </section>
+        
+        <div class="support-channels">
+          <a href="https://buymeacoffee.com/dennis2" target="_blank" class="subtle-support">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            Buy me a coffee
+          </a>
+          <span class="dot">•</span>
+          <button class="subtle-support" onclick="copySupportNumber()">
+            Support via M-Pesa (0758596269)
+          </button>
+        </div>
+        
+        <p class="copyright">&copy; 2026 LipaSafe. All rights reserved.</p>
+      </footer>
     </main>
 
     <nav class="btm-nav">
@@ -73,6 +88,7 @@
     </nav>
   </div>
 
+  <script src="script.js"></script>
   <script>
     // SVG Icons
     const ICONS = {
@@ -97,24 +113,72 @@
       { id: "education", name: "Education", description: "Schools & Fees" }
     ];
 
+    // Render Categories
     const grid = document.getElementById('categoryGrid');
     CATEGORIES.forEach(cat => {
       const card = document.createElement('a');
       card.href = `categories/${cat.id}.html`;
       card.className = 'cat-card';
-      card.innerHTML = `
-        <div class="cat-icon-wrapper bg-${cat.id}">
-          ${ICONS[cat.id]}
-        </div>
-        <div class="cat-info">
-          <h4>${cat.name}</h4>
-          <p>${cat.description}</p>
-        </div>
-      `;
+      card.innerHTML = `<div class="cat-icon-wrapper bg-${cat.id}">${ICONS[cat.id]}</div><div class="cat-info"><h4>${cat.name}</h4><p>${cat.description}</p></div>`;
       grid.appendChild(card);
     });
 
-    // Simple Theme Toggle
+    // Global Search Logic
+    const searchInput = document.getElementById('globalSearch');
+    const searchResults = document.getElementById('searchResults');
+    const catSection = document.getElementById('catSection');
+
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.toLowerCase().trim();
+      if (!q) {
+        searchResults.style.display = 'none';
+        catSection.style.display = 'block';
+        return;
+      }
+
+      const matches = ALL_DATA.filter(i => 
+        i.name.toLowerCase().includes(q) || 
+        i.number.includes(q) || 
+        i.category.toLowerCase().includes(q)
+      ).slice(0, 10);
+
+      if (matches.length > 0) {
+        searchResults.style.display = 'grid';
+        catSection.style.display = 'none';
+        searchResults.innerHTML = matches.map(item => `
+          <div class="ls-card">
+            <div class="card-name">${item.name} ${item.verified ? '<span class="verified-badge">Verified</span>' : ''}</div>
+            <div class="card-meta">${item.category} • ${item.type}</div>
+            <div class="number-section">
+              <span class="num-value" style="font-size: 16px">${item.number}</span>
+              <button class="copy-btn" onclick="copyNumber('${item.number}')">Copy</button>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        searchResults.style.display = 'block';
+        searchResults.innerHTML = '<div class="empty-state"><h3>No matches found</h3><p>Try searching for something else.</p></div>';
+      }
+    });
+
+    window.copyNumber = (num) => {
+      navigator.clipboard.writeText(num).then(() => {
+        const toast = document.getElementById('toast');
+        toast.textContent = `${num} copied!`;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    };
+
+    window.copySupportNumber = () => {
+      navigator.clipboard.writeText('0758596269').then(() => {
+        const toast = document.getElementById('toast');
+        toast.textContent = `Support Number Copied!`;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    };
+
     const themeBtn = document.getElementById('themeToggle');
     themeBtn.onclick = () => {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
