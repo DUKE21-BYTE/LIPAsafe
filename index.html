@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LipaSafe - The Ultimate M-Pesa Paybill & Till Directory</title>
+  <meta name="description" content="Securely find and verify M-Pesa Paybill and Till numbers for KPLC, Water, Banks, Government services, and more. Your trusted Kenyan payment directory.">
+  <meta name="keywords" content="M-Pesa, Paybill, Till Number, Kenya, Lipa na M-Pesa, KPLC Paybill, Bank Paybill">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lipasafe.co.ke/">
+  <meta property="og:title" content="LipaSafe - M-Pesa Directory">
+  <meta property="og:description" content="Securely find and verify M-Pesa Paybill and Till numbers in Kenya.">
+  <meta property="og:image" content="/og-image.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="ls-toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <header class="ls-header">
+      <div class="header-content">
+        <div class="logo-area">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 12L11 15L16 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h1>LipaSafe <span class="tagline">M-Pesa Directory</span></h1>
+        </div>
+        
+        <div class="search-wrap">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+          <input type="text" id="searchInput" placeholder="Search Paybill, Till or Service name..." autocomplete="off" aria-label="Search Kenyan paybills and till numbers">
+        </div>
+      </div>
+    </header>
+
+    <div class="cat-strip-container">
+      <div class="cat-strip no-scrollbar" id="catStrip">
+        <!-- Categories will be injected here -->
+      </div>
+    </div>
+
+    <main class="results-area" id="app">
+      <div class="results-header">
+        <h2 id="countLabel" class="results-count"></h2>
+        <div class="filter-status" id="filterStatus"></div>
+      </div>
+      <div id="results" class="results-grid">
+        <!-- Results will be injected here -->
+      </div>
+    </main>
+
+    <nav class="btm-nav">
+      <button class="nav-item active" id="navHome" title="Search Directory">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+        </svg>
+        <span class="nav-label">Search</span>
+      </button>
+      <button class="nav-item" id="navFavs" title="Saved Numbers">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
+        </svg>
+        <span class="nav-label">Saved</span>
+      </button>
+      <a class="nav-item report-link" href="#" id="reportBtn" title="Report Incorrect Number">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+        </svg>
+        <span class="nav-label">Report</span>
+      </a>
+      <button class="nav-item" id="themeToggle" title="Toggle Theme">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
+        </svg>
+        <span class="nav-label">Theme</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
