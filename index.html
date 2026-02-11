@@ -3,97 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>LipaSafe - The Ultimate M-Pesa Paybill & Till Directory</title>
-  <meta name="description" content="Securely find and verify M-Pesa Paybill and Till numbers for KPLC, Water, Banks, Government services, and more. Your trusted Kenyan payment directory.">
-  <meta name="keywords" content="M-Pesa, Paybill, Till Number, Kenya, Lipa na M-Pesa, KPLC Paybill, Bank Paybill">
-  
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://lipasafe.co.ke/">
-  <meta property="og:title" content="LipaSafe - M-Pesa Directory">
-  <meta property="og:description" content="Securely find and verify M-Pesa Paybill and Till numbers in Kenya.">
-  <meta property="og:image" content="/og-image.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/favicon.png">
-
-  <!-- Fonts -->
+  <title>LipaSafe - M-Pesa Paybill & Till Directory</title>
+  <meta name="description" content="Securely find and verify M-Pesa Paybill and Till numbers for KPLC, Water, Banks, Government services, and more.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-  
-  <!-- Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="landing-page">
   <div class="app-container">
     <div class="ls-toast" id="toast" role="alert" aria-live="polite"></div>
 
-    <header class="ls-header">
+    <header class="ls-header landing-header">
       <div class="header-content">
         <div class="logo-area">
           <div class="logo-icon">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
-              <path d="M8 12L11 15L16 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" stroke-width="2"/>
+              <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <h1>LipaSafe <span class="tagline">M-Pesa Directory</span></h1>
+          <h1>LipaSafe</h1>
         </div>
-        
-        <div class="search-wrap">
-          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-          </svg>
-          <input type="text" id="searchInput" placeholder="Search Paybill, Till or Service name..." autocomplete="off" aria-label="Search Kenyan paybills and till numbers">
+        <div class="hero-text">
+          <h2>Secure M-Pesa Directory</h2>
+          <p>Instantly find and verify Paybill and Till numbers for all major services in Kenya. No more wrong payments.</p>
         </div>
       </div>
     </header>
 
-    <div class="cat-strip-container">
-      <div class="cat-strip no-scrollbar" id="catStrip">
-        <!-- Categories will be injected here -->
-      </div>
-    </div>
+    <main class="landing-main">
+      <section class="category-section">
+        <h3 class="section-title">Browse Categories</h3>
+        <div class="category-grid" id="categoryGrid">
+          <!-- Categories will be injected here -->
+        </div>
+      </section>
 
-    <main class="results-area" id="app">
-      <div class="results-header">
-        <h2 id="countLabel" class="results-count"></h2>
-        <div class="filter-status" id="filterStatus"></div>
-      </div>
-      <div id="results" class="results-grid">
-        <!-- Results will be injected here -->
-      </div>
+      <section class="info-section">
+        <div class="info-card">
+          <h4>Why use LipaSafe?</h4>
+          <ul>
+            <li><strong>Verified:</strong> All numbers are manually checked.</li>
+            <li><strong>Secure:</strong> Reduce risk of sending money to the wrong person.</li>
+            <li><strong>Fast:</strong> One-tap copy to M-Pesa.</li>
+          </ul>
+        </div>
+      </section>
     </main>
 
     <nav class="btm-nav">
-      <button class="nav-item active" id="navHome" title="Search Directory">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+      <a href="index.html" class="nav-item active">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
         </svg>
-        <span class="nav-label">Search</span>
-      </button>
-      <button class="nav-item" id="navFavs" title="Saved Numbers">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/>
-        </svg>
-        <span class="nav-label">Saved</span>
-      </button>
-      <a class="nav-item report-link" href="#" id="reportBtn" title="Report Incorrect Number">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-        </svg>
-        <span class="nav-label">Report</span>
+        <span class="nav-label">Home</span>
       </a>
-      <button class="nav-item" id="themeToggle" title="Toggle Theme">
+      <button class="nav-item" id="themeToggle">
         <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
         </svg>
-        <span class="nav-label">Theme</span>
+        <span class="nav-label">Mode</span>
       </button>
     </nav>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // Inline data to keep simple for now
+    const CATEGORIES = [
+      { name: "Utilities", icon: "⚡", description: "Water, Electricity, Gas" },
+      { name: "Banking", icon: "🏦", description: "Banks, Loans, SACCOs" },
+      { name: "Internet", icon: "🌐", description: "Wifi, Fiber, Data" },
+      { name: "Government", icon: "🏛️", description: "KRA, NHIF, eCitizen" },
+      { name: "Shopping", icon: "🛒", description: "Supermarkets, Online" },
+      { name: "Transport", icon: "🚗", description: "Fuel, SGR, Flights" },
+      { name: "Insurance", icon: "🛡️", description: "Health, Life, Motor" },
+      { name: "Education", icon: "🎓", description: "Schools, Universities" }
+    ];
+
+    const grid = document.getElementById('categoryGrid');
+    CATEGORIES.forEach(cat => {
+      const card = document.createElement('a');
+      card.href = `categories/${cat.name.toLowerCase()}.html`;
+      card.className = 'cat-card';
+      card.innerHTML = `
+        <span class="cat-icon">${cat.icon}</span>
+        <div class="cat-info">
+          <h4>${cat.name}</h4>
+          <p>${cat.description}</p>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    // Simple Theme Toggle
+    const themeBtn = document.getElementById('themeToggle');
+    themeBtn.onclick = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('lipasafe_theme', isDark ? 'light' : 'dark');
+    };
+    if (localStorage.getItem('lipasafe_theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
 </body>
 </html>

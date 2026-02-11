@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Government Services - LipaSafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="category-page">
+  <div class="app-container">
+    <div class="ls-toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <header class="ls-header">
+      <div class="header-content">
+        <a href="../index.html" class="back-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back
+        </a>
+        <div class="category-title-area">
+          <span class="cat-icon-large">🏛️</span>
+          <h1>Government Services</h1>
+          <p class="cat-intro">Official government paybill numbers for KRA, NHIF, NSSF, and eCitizen services.</p>
+        </div>
+        
+        <div class="search-wrap compact">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+          <input type="text" id="catSearch" placeholder="Search government services..." autocomplete="off">
+        </div>
+      </div>
+    </header>
+
+    <main class="results-area">
+      <div class="results-grid" id="results">
+        <!-- Results will be injected here -->
+      </div>
+    </main>
+
+    <nav class="btm-nav">
+      <a href="../index.html" class="nav-item">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        <span class="nav-label">Home</span>
+      </a>
+      <button class="nav-item" id="themeToggle">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
+        </svg>
+        <span class="nav-label">Theme</span>
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    const GOV_DATA = [
+      { id:43, name:"NHIF", type:"Paybill", number:"200222", account:"ID Number", verified:true },
+      { id:44, name:"HELB", type:"Paybill", number:"200800", account:"ID Number", verified:true },
+      { id:45, name:"KRA (iTax)", type:"Paybill", number:"572572", account:"E-slip Number", verified:true },
+      { id:46, name:"NSSF", type:"Paybill", number:"200555", account:"NSSF Number", verified:true },
+      { id:47, name:"eCitizen Services", type:"Paybill", number:"206206", account:"Application Number", verified:true },
+      { id:48, name:"NTSA (Vehicle Services)", type:"Paybill", number:"572572", account:"Reference No", verified:true },
+      { id:49, name:"Huduma Centre", type:"Paybill", number:"222000", account:"Service Number", verified:true }
+    ];
+
+    const resultsDiv = document.getElementById('results');
+    const searchInput = document.getElementById('catSearch');
+    const toastEl = document.getElementById('toast');
+
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      setTimeout(() => toastEl.classList.remove('show'), 2500);
+    }
+
+    function render(data) {
+      resultsDiv.innerHTML = '';
+      data.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'ls-card';
+        card.innerHTML = `
+          <div class="card-top">
+            <div class="info-main">
+              <div class="card-name">
+                ${item.name}
+                ${item.verified ? '<span class="verified-badge">✓ Verified</span>' : ''}
+              </div>
+              <div class="card-meta"><span>${item.type}</span></div>
+            </div>
+          </div>
+          <div class="number-section">
+            <div class="number-info">
+              <span class="num-label">Number</span>
+              <span class="num-value">${item.number}</span>
+            </div>
+            <button class="copy-btn" onclick="copyText('${item.number}')">Copy</button>
+          </div>
+          <div class="card-footer">
+            <span class="acc-hint">Account: ${item.account}</span>
+          </div>
+        `;
+        resultsDiv.appendChild(card);
+      });
+    }
+
+    window.copyText = (text) => {
+      navigator.clipboard.writeText(text).then(() => showToast(`${text} copied!`));
+    };
+
+    searchInput.oninput = () => {
+      const q = searchInput.value.toLowerCase();
+      render(GOV_DATA.filter(i => i.name.toLowerCase().includes(q)));
+    };
+
+    // Theme Toggle
+    const themeBtn = document.getElementById('themeToggle');
+    themeBtn.onclick = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const newTheme = isDark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('lipasafe_theme', newTheme);
+    };
+    if (localStorage.getItem('lipasafe_theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    render(GOV_DATA);
+  </script>
+</body>
+</html>
